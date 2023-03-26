@@ -1,6 +1,6 @@
 /* IMPORTANT: this file ***IS SAFE*** to edit, only written first time "prisma generate" is ran */
 import type { NextApiHandler } from 'next'
-import { prisma, useMiddleware } from '../../../../src/pgen/index'
+import { prisma, useMiddleware } from '@/pgen'
 
 const handler: NextApiHandler = async (req, res) => {
   // method, operation, and args should all be validated in middleware

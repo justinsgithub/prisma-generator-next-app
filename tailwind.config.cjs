@@ -2,9 +2,6 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      /* fontFamily: { */
-      /*   serif: ['var(--font-kaisei)'], */
-      /* }, */
       colors: {
         primary: {
           50: '#eff6ff',
