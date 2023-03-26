@@ -37,49 +37,25 @@ type AllowedMethod = Exclude<HttpMethod, 'HEAD' | 'CONNECT' | 'TRACE' | 'PATCH'>
 
 type OpMethod = Exclude<AllowedMethod, 'OPTIONS'>
 
-type ModelFileName = 'users' | 'posts' | 'books' | 'maps'
+type ModelFileName = 'authors' | 'series' | 'books' | 'genres'
 
 type PrismaApiEndpoint = `/api/pgen/${ModelFileName}`
-/*
-modelApi = 
-*/
 
-type ModelEndpoint = Record<ModelName, Record<'endpoint', PrismaApiEndpoint>>
+type _PrismaApiEndpoints = Record<ModelName, PrismaApiEndpoint>
 
-interface ModelsEndpoints extends ModelEndpoint {
-  'Us': {
-    endpoint: `api/pgen/users`
-  }
-  '': {
-    endpoint: `api/pgen/users`
-  }
-  User: {
-    endpoint: `api/pgen/users`
-  }
-  User: {
-    endpoint: `api/pgen/users`
-  }
+interface PrismaApiEndpoints extends _PrismaApiEndpoints {
+  'Author': '/api/pgen/authors',
+  'Series': '/api/pgen/series',
+  'Book': '/api/pgen/books',
+  'Genre': '/api/pgen/genres',
 }
-
-type ModelNameRec<T extends ModelName> = Record<T>
-
-const blah: ModelNameRec<'Map'> = { User: 'User' }
-
-const blah2: ModelNameRec<'User'> = { User: 'User' }
-
-type ModelRec<T extends ModelName> = T extends 'User' ? Record<T, Record> : ''
-
-/* interface ModelApi implements ModelRec { */
-/*   'User': {} */
-/*   'Book': { } */
-/*   'Post': { } */
-/*   'Map': { } */
-/* } */
 
 export type PostOp = Extract<'create' | 'upsert', ModelOp>
 export type GetOp = Exclude<ModelOp, PostOp | PutOp | DeleteOp>
 export type PutOp = Extract<'update' | 'updateMany' | 'upsert', ModelOp>
 export type DeleteOp = Extract<'delete' | 'deleteMany', ModelOp>
+
+type PrismaApi<T extends ModelOp, M extends ModelName> = T extends GetOp ? `${PrismaApiEndpoints[M]}?op=${T}&args=${string}` : `${PrismaApiEndpoints[M]}?op=${T}`
 
 type MethodOp = Record<
   OpMethod,
