@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator next {
+  provider          = "prisma-generator-next"
+  output            = "../src"
+  outputSuffix      = "pgen" // ${output}/pgen/${generatedFiles}
+  apiRoutePrefix    = "pgen" // pages/api/pgen/${modelName}
+  prismaVarName     = "prisma"
+  useBigInt         = false
+  isGenerateSelect  = true
+  isGenerateInclude = true
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Author {
+  id      Int      @id @default(autoincrement())
+  twitter String?  @unique
+  name    String
+  books   Book[]
+  series  Series[]
+}
+
+model Book {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  published DateTime @default(now())
+  author    Author   @relation(fields: [authorId], references: [id])
+  authorId  Int
+  genre     Genre?    @relation(fields: [genreId], references: [id])
+  genreId   Int?
+  series    Series?  @relation(fields: [seriesId], references: [id])
+  seriesId  Int?
+}
+
+model Series {
+  id       Int     @id @default(autoincrement())
+  title    String
+  books    Book[]
+  Author   Author @relation(fields: [authorId], references: [id])
+  authorId Int
+  Genre    Genre?  @relation(fields: [genreId], references: [id])
+  genreId  Int?
+}
+
+model Genre {
+  id     Int      @id @default(autoincrement())
+  name   String
+  books  Book[]
+  series Series[]
+}
+
+/// @@Gen.model(hide: true)
+model Note {
+  id    Int    @id @default(autoincrement())
+  title String
+  body  String
+}

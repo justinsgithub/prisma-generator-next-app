@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator next {
+  provider          = "prisma-generator-next"
+  output            = "../src"
+  outputSuffix      = "pgen" // ${output}/pgen/${generatedFiles}
+  apiRoutePrefix    = "pgen" // pages/api/pgen/${modelName}
+  prismaVarName     = "prisma"
+  useBigInt         = false
+  isGenerateSelect  = true
+  isGenerateInclude = true
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Author {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  twitter String?  @unique
+  name    String
+  books   Book[]
+  series  Series[]
+}
+
+model Book {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  published DateTime @default(now())
+  author    Author   @relation(fields: [authorId], references: [id])
+  authorId  String   @db.ObjectId
+  genre     Genre?    @relation(fields: [genreId], references: [id])
+  genreId   String?   @db.ObjectId
+  series    Series?  @relation(fields: [seriesId], references: [id])
+  seriesId  String?   @db.ObjectId
+}
+
+model Series {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  books    Book[]
+  Author   Author @relation(fields: [authorId], references: [id])
+  authorId String @db.ObjectId
+  Genre    Genre?  @relation(fields: [genreId], references: [id])
+  genreId  String? @db.ObjectId
+}
+
+model Genre {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  books  Book[]
+  series Series[]
+}
+
+/// @@Gen.model(hide: true)
+model Note {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  body  String
+}
