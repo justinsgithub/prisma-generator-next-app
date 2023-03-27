@@ -1,7 +1,7 @@
 /* IMPORTANT: this file ***IS NOT SAFE*** to edit, will be overwritten every time "prisma generate" is ran */
 /* all files in ./prisma-zod directory will also be deleted / overwritten */
 import * as schemas from './schemas'
-import { ModelValidations } from './types'
+import { ModelValidations } from './pgen-types'
 
 export const validations: ModelValidations = {
   Author: {

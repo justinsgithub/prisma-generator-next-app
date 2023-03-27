@@ -1,9 +1,7 @@
-import type { ModelName } from '@/pgen/types'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import pluralize from 'pluralize'
 import { FC, useEffect, useState } from 'react'
-import { authorFindFirst, authorFindMany } from '@/pgen/frontend/authors'
+import { prismaFrontend as prisma, requestFunction } from '@/pgen/frontend'
 import { Author, Book } from '@prisma/client'
 import { useRouter } from 'next/router'
 
@@ -22,11 +20,11 @@ const Card: FC<{ href: string, name: string }> = ({ href, name }) => {
 const Page: NextPage = () => {
   const [author, setAuthor] = useState<(Author & { books: Book[]; } | null)>()
   const router = useRouter()
-  const _id  = router.query.id as string
-  const id = +_id
+  const _id  = router.query?.id as string
    
   async function getAuthor() {
-    const author = await authorFindFirst({include:{"books": true}})
+    const id = +_id
+    const author = await prisma.author.findUnique({"where": {id}, "include": {"books": true}}, requestFunction)
     setAuthor(author)
   }
 
@@ -34,26 +32,26 @@ const Page: NextPage = () => {
     getAuthor()
   }, [])
 
-  const authorPages = authors.map((author) => {
+  const books = author?.books.map((book) => {
     return {
-      href: `/authors/${author.id}`,
-      name: author.name,
+      href: `/books/${book.id}`,
+      name: book.title,
     }
-  })
+  }) || []
 
   return (
     <div className='bg-gray-50 dark:bg-gray-900'>
       <div className='bg-gray-50 dark:bg-gray-900'>
         <header>
           <Link href='/'>
-            <h1 className='pt-9 text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl'>My Library - Authors</h1>
+            <h1 className='pt-9 text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl'>My Library - Authors - {author?.name}</h1>
           </Link>
         </header>
       </div>
       <main className='container mx-auto'>
         <section className='bg-gray-50 dark:bg-gray-900'>
           <div className='mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0'>
-            {authorPages.length > 0 && authorPages.map((page) => ( <Card {...page} />))}
+            {books.length > 0 && books.map((book) => ( <Card {...book} />))}
           </div>
         </section>
       </main>
@@ -62,5 +60,3 @@ const Page: NextPage = () => {
 }
 
 export default Page
-
-

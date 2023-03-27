@@ -55,7 +55,17 @@ export type GetOp = Exclude<ModelOp, PostOp | PutOp | DeleteOp>
 export type PutOp = Extract<'update' | 'updateMany' | 'upsert', ModelOp>
 export type DeleteOp = Extract<'delete' | 'deleteMany', ModelOp>
 
-type PrismaApi<T extends ModelOp, M extends ModelName> = T extends GetOp ? `${PrismaApiEndpoints[M]}?op=${T}&args=${string}` : `${PrismaApiEndpoints[M]}?op=${T}`
+type PrismaApi<OP extends ModelOp, M extends ModelName> = OP extends GetOp ? `${PrismaApiEndpoints[M]}?op=${OP}&args=${string}` : `${PrismaApiEndpoints[M]}?op=${OP}`
+
+type OpReqMethod<OP extends ModelOp> = OP extends GetOp ? 'get' : OP extends PostOp ? 'post' : OP extends PutOp ? 'put' : 'delete'
+
+type PrismaRequest<A, OP extends ModelOp, M extends ModelName> = {
+  method: OpReqMethod<OP>
+  data: A
+  url: PrismaApi<OP, M>
+}
+
+export type RequestFunction<T, OP extends ModelOp, M extends ModelName> = (req: PrismaRequest<T, OP, M>) => any
 
 type MethodOp = Record<
   OpMethod,

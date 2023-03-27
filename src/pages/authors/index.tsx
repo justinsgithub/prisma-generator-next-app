@@ -1,9 +1,9 @@
-import type { ModelName } from '@/pgen/types'
+import type { ModelName } from '@/pgen/pgen-types'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import pluralize from 'pluralize'
 import { FC, useEffect, useState } from 'react'
-import { authorFrontend as prisma } from '@/pgen/frontend/authors'
+import { prismaFrontend as prisma, requestFunction } from '@/pgen/frontend'
 import { Author, Book } from '@prisma/client'
 
 const Card: FC<{ href: string, name: string }> = ({ href, name }) => {
@@ -22,7 +22,7 @@ const Page: NextPage = () => {
   const [authors, setAuthors] = useState<(Author & { books: Book[]; })[]>([])
    
   async function getAuthors() {
-    const authors = await prisma.authorFindMany({include:{"books": true}})
+    const authors = await prisma.author.findMany({include:{"books": true}}, requestFunction)
     setAuthors(authors)
   }
 

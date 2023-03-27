@@ -1,4 +1,4 @@
-import type { ModelName } from '@/pgen/types'
+import type { ModelName } from '@/pgen/pgen-types'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import pluralize from 'pluralize'
