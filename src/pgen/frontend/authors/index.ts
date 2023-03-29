@@ -70,6 +70,6 @@ export const authorFrontend: AuthorFrontend = {
   },
   async upsert(args, func) {
     const url: PrismaApi<'upsert', 'Author'> = `/api/pgen/authors?op=upsert`
-    return await func({ method: 'post', data: args, url })
+    return await func({ method: 'put', data: args, url })
   },
 }
