@@ -58,8 +58,17 @@ export type PrismaApiOp<OP extends ModelOp, M extends ModelName> = `${ModelEndpo
 
 export type PrismaApi<OP extends ModelOp, M extends ModelName> = OP extends GetOp ? `${PrismaApiOp<OP, M>}&args=${string}` : PrismaApiOp<OP, M>
 
+type RequestMethod<OP extends ModelOp> = OP extends 'upsert' ? 'post' | 'put' : OP extends GetOp ? 'get' : OP extends PutOp ? 'put' : OP extends DeleteOp ? 'delete' : 'post'
 
-type b  = PrismaApi<'findMany', 'Book'>
+export type ReqFuncParams<A, OP extends ModelOp, M extends ModelName> = {
+  data: A
+  method: RequestMethod<OP>
+  url: PrismaApi<OP, M>
+}
+
+export type RequestFunction<A, OP extends ModelOp, M extends ModelName> = (params: ReqFuncParams<A,OP,M>) => any
+
+/* export type RequestFunction = (params: RequestFuncParams) => any */
 
 type OpMethodsType = Record<
   OpMethod,

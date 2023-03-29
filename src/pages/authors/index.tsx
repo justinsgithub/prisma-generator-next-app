@@ -1,7 +1,5 @@
 import { prismaFrontend as prisma, requestFunction } from '@/pgen/frontend'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Author, Book } from '@prisma/client'
-import { prismaFrontend } from '../.././'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'

@@ -1,5 +1,5 @@
 import type { Prisma as P } from '@prisma/client'
-import { PrismaApi, RequestFunction } from '../../pgen-types'
+import { PrismaApi, RequestFunction } from '../../pgen-save-types'
 type PC<T, Null = never> = P.Prisma__AuthorClient<T, Null>
 
 // prettier-ignore
