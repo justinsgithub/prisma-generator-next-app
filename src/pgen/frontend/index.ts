@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { OpMethod } from '../pgen-types';
+import { OpMethod } from '../pgen-save-types';
 import { authorFrontend as author } from './authors';
 import { bookFrontend as book } from './books';
 import { genreFrontend as genre } from './genres';
