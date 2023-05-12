@@ -2,7 +2,6 @@ import type { Prisma as P } from '@prisma/client'
 import { PrismaApi, RequestFunction } from '../../pgen-save-types'
 type PC<T, Null = never> = P.Prisma__AuthorClient<T, Null>
 
-// prettier-ignore
 interface AuthorFrontend {
   aggregate<A extends P.AuthorAggregateArgs>(args: A, func: RequestFunction<A,'aggregate','Author'>): Promise<P.GetAuthorAggregateType<A>>
   create<A extends P.AuthorCreateArgs>(args: A, func: RequestFunction<A,'create','Author'>): Promise<PC<P.AuthorGetPayload<A>[]>>

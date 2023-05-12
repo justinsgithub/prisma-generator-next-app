@@ -1,6 +1,6 @@
 /* IMPORTANT: this file ***IS NOT SAFE*** to edit, will be overwritten every time "prisma generate" is ran */
 import { ZodObject } from 'zod'
-import type {Prisma} from'@prisma/client'
+import type {Prisma} from '@prisma/client'
 
 /*
   OPTIONS is standard HTTP method that returns 204 (No Content) with an "Allow" header containing allowed methods
@@ -67,8 +67,6 @@ export type ReqFuncParams<A, OP extends ModelOp, M extends ModelName> = {
 }
 
 export type RequestFunction<A, OP extends ModelOp, M extends ModelName> = (params: ReqFuncParams<A,OP,M>) => any
-
-/* export type RequestFunction = (params: RequestFuncParams) => any */
 
 type OpMethodsType = Record<
   OpMethod,

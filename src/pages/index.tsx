@@ -2,7 +2,7 @@ import type { ModelName } from '@/pgen/pgen-types'
 import { NextPage } from 'next'
 import Link from 'next/link'
 import pluralize from 'pluralize'
-import { FC } from 'react'
+import type { FC } from 'react'
 
 const Card: FC<{ href: string; name: string }> = ({ href, name }) => {
   return (
